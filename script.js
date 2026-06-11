@@ -50,6 +50,7 @@ function renderTasks() {
 
         // Checkbox
         const checkbox = document.createElement("input");
+
         checkbox.type = "checkbox";
         checkbox.checked = task.completed;
 
@@ -63,11 +64,38 @@ function renderTasks() {
 
         // Task Text
         const span = document.createElement("span");
+
         span.textContent = task.text;
 
         if (task.completed) {
             span.classList.add("completed");
         }
+
+        // Edit Button
+        const editBtn = document.createElement("button");
+
+        editBtn.textContent = "Edit";
+        editBtn.classList.add("edit-btn");
+
+        editBtn.addEventListener("click", () => {
+
+            const updatedTask = prompt(
+                "Edit your task:",
+                task.text
+            );
+
+            if (
+                updatedTask !== null &&
+                updatedTask.trim() !== ""
+            ) {
+
+                tasks[index].text =
+                updatedTask.trim();
+
+                saveTasks();
+                renderTasks();
+            }
+        });
 
         // Delete Button
         const deleteBtn = document.createElement("button");
@@ -85,6 +113,7 @@ function renderTasks() {
 
         li.appendChild(checkbox);
         li.appendChild(span);
+        li.appendChild(editBtn);
         li.appendChild(deleteBtn);
 
         taskList.appendChild(li);
@@ -93,5 +122,8 @@ function renderTasks() {
 
 // Save to Local Storage
 function saveTasks() {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
+    localStorage.setItem(
+        "tasks",
+        JSON.stringify(tasks)
+    );
 }
